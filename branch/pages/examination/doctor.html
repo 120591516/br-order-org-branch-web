@@ -1,0 +1,572 @@
+<!-- CSS -->
+<link href="/branch/css/bootstrap.min.css" rel="stylesheet">
+<link href="/branch/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/branch/css/animate.css" />
+<link href="/branch/css/style.css" rel="stylesheet">
+<link href="/branch/css/icons.css" rel="stylesheet">
+<!--form样式-->
+<link rel="stylesheet" type="text/css" href="/branch/css/form.css" />
+<!--自定义css-->
+<link rel="stylesheet" type="text/css" href="/branch/css/styleCreate.css" />
+<!--表单验证-->
+<link rel="stylesheet" type="text/css" href="/branch/css/validator.css" />
+<section class="container">
+	<div class="block-area">
+		<h3 class="block-title">医生搜索</h3>
+		<!--<a class="block-title btn float_r" onclick="storeManagementBack()">返回</a>-->
+		<a href="#addOrgUser" data-toggle="modal" onclick="departPs('#addDeptId')" class="block-title btn float_r" id="addDoctorInfo">添加</a>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+				<tbody>
+					<tr>
+						<td>
+							<div class="input-group">
+								<span class="input-group-addon span_addon">医生姓名</span>
+								<input type="text" id="userName" class="input-sm form-control" placeholder="姓名">
+							</div>
+						</td>
+						<td>
+							<div class="input-group">
+								<span class="input-group-addon span_addon">邮箱</span>
+								<input type="text" id="userEmail" class="input-sm form-control" placeholder="邮箱">
+							</div>
+						</td>
+						<td>
+							<div class="input-group">
+								<span class="input-group-addon span_addon">手机号</span>
+								<input type="text" id="userPhone" class="input-sm form-control" placeholder="手机号">
+							</div>
+						</td>
+						<td>
+							<div class="input-group">
+								<input type="button" class="btn fa fa-search span_addon font_16" onclick="deptSearch()" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+<section class="container">
+	<div class="block-area">
+		<h3 class="block-title">医生列表</h3>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>操作</th>
+						<th>登录名</th>
+						<th>用户名</th>
+						<th>手机号</th>
+						<th>邮箱</th>
+						<th>科室名称</th>
+						<th>状态</th>
+						<th>创建时间</th>
+					</tr>
+				</thead>
+				<tbody id="doctorInfoTboody"></tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-md-12" id="callBackPager"></div>
+	</div>
+</section>
+<!--模态框添加S-->
+<div class="modal fade" id="addOrgUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title" id="myModalLabel">医生--添加</h3>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="addOrgUserForm">
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">科室名称</span>
+						<select class="form-control input-sm m-b-10" name="orgBranchDeptId" id="addDeptId"></select>
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">登录名</span>
+						<input type="text" id="adduserLoginName" class="form-control" name="userLoginName" aria-describedby="basic-addon1" maxlength='12' required>
+					</div>
+					<div id="adduserLoginNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">医生姓名</span>
+						<input type="text" id="adduserName" class="form-control" name="userName" aria-describedby="basic-addon1" maxlength='10' required>
+					</div>
+					<div id="adduserNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">手机号</span>
+						<input type="text" id="adduserPhone" class="form-control" name="userPhone" aria-describedby="basic-addon1" required>
+					</div>
+					<div id="adduserPhoneTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_1">邮箱</span>
+						<input type="text" id="adduserEmail" class="form-control" name="userEmail" aria-describedby="basic-addon1" required>
+					</div>
+					<div id="adduserEmailTip"></div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<span class="color_dark">*初始密码88888888</span>
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn btn-primary float_r" data-dismiss="modal" id="addOrgUserSubmit">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框添加E-->
+
+<!--模态框查看S-->
+<div class="modal fade" id="checkOrgUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">医生--查看</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="checkOrgUserForm">
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">科室名称</span>
+						<select class="form-control input-sm m-b-10" id="checkOrgBranchDeptId" name="orgBranchDeptId" disabled="disabled"></select>
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">登录名</span>
+						<input type="text" id="checkuserLoginName" class="form-control" name="userLoginName" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">医生姓名</span>
+						<input type="text" id="checkuserName" class="form-control" name="userName" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">手机号</span>
+						<input type="text" id="checkuserPhone" class="form-control" name="userPhone" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_1">邮箱</span>
+						<input type="text" id="checkuserEmail" class="form-control" name="userEmail" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">创建时间</span>
+						<input type="text" id="checkuserCreateTime" class="form-control" name="userCreateTime" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px" id='checkuserStatus'>
+						<span class="input-group-addon span_addon lette_spacing_3">状 态</span>
+						<input type="radio" name='userStatus' value="0" disabled="disabled" />启用
+						<input type="radio" name='userStatus' value="1" disabled="disabled" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框查看E-->
+<!--模态框编辑S-->
+<div class="modal fade" id="editOrgUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">医生--编辑</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="editOrgUserForm">
+					<input type="hidden" name="userId" id="edituserId" value="" />
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">科室名称</span>
+						<select class="form-control input-sm m-b-10" id="editOrgBranchDeptId" name="orgBranchDeptId"></select>
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">登录名</span>
+						<input type="text" id="edituserLoginName" class="form-control input-sm m-b-10" name="userLoginName" aria-describedby="basic-addon1" disabled="disablededit">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon">医生姓名</span>
+						<input type="text" id="edituserName" class="form-control input-sm m-b-10" name="userName" aria-describedby="basic-addon1">
+					</div>
+					<div id="edituserNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">手机号</span>
+						<input type="text" id="edituserPhone" class="form-control input-sm m-b-10" name="userPhone" aria-describedby="basic-addon1">
+					</div>
+					<div id="edituserPhoneTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_1">邮箱</span>
+						<input type="text" id="edituserEmail" class="form-control input-sm m-b-10" name="userEmail" aria-describedby="basic-addon1">
+					</div>
+					<div id="edituserEmailTip"></div>
+					<div class="input-group margin_bm_10px" id='edituserStatus'>
+						<span class="input-group-addon span_addon lette_spacing_3">状 态</span>
+						<input type="radio" name='userStatus' value="0" />启用
+						<input type="radio" name='userStatus' value="1" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn btn-primary float_r" data-dismiss="modal" id="editDoctorInfoBtn">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框编辑E-->
+<!-- jQuery -->
+<script src="/branch/js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/branch/js/bootstrap.min.js"></script>
+<!--本地自建JS-->
+<script src="/branch/js/createJs/content.js"></script>
+<!--地址-->
+<script src="/branch/js/createJs/pageUrl.js"></script>
+<!--分页插件-->
+<script src="/branch/js/plugins/extendPagination.js"></script>
+<!--select样式-->
+<script src="/branch/js/plugins/select.min.js"></script>
+<!--表单验证-->
+<script src="/branch/js/plugins/formValidator-4.0.1.min.js"></script>
+<script src="/branch/js/plugins/formValidatorRegex.js"></script>
+<script>
+	//  分页
+	init_page();
+
+	function init_page() {
+		//			page_curr = 1;
+		//1.请求后端信息并展示
+		deptSearch();
+		//2.初始化分页信息
+		init_pager();
+		return false;
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				deptSearch();
+			}
+		});
+	}
+	//  搜索
+	function deptSearch() {
+		$('#doctorInfoTboody').empty();
+		var userName = $("#userName").val();
+		var userPhone = $("#userPhone").val();
+		var userEmail = $("#userEmail").val();
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		if(userName != '') {
+			param.userName = userName;
+		}
+		if(userPhone != '') {
+			param.userPhone = userPhone;
+		}
+		if(userEmail != '') {
+			param.userEmail = userEmail;
+		}
+
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(doctor_getUserByBranchId_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			if(reqResult.data != '' & reqResult.data != null) {
+				//4.展示数据
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			} else {
+				alert('未能查询到可供展示的医生列表信息数据！');
+			}
+		} else {
+			alert(reqResult.message);
+		}
+		return false;
+	}
+
+	function createTable(currPage, limit, total, dataBack) {
+		var showNum = limit;
+		if(total - (currPage * limit) < 0)
+			showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		if(datal != '') {
+			for(var i = 0; i < showNum; i++) {
+				str += "<tr><td userId='" + datal[i].userId + "'>";
+				str += "<a href='#checkOrgUser' data-toggle='modal' title='查看医生信息' onclick='check_doctorInfo(this)'><i class='fa fa-eye'></i></a> ";
+				str += "<a href='#editOrgUser' data-toggle='modal' title='编辑医生信息' onclick='edit_doctorInfo(this)'><i class='fa fa-pencil'></i></a> ";
+				str += "<a href='#' title='删除医生信息' onclick='del_doctorInfo(this)'><i class='fa fa-trash-o'></i></a>";
+				str += "</td>";
+				str += "<td>" + nullformat(datal[i].userLoginName) + "</td>";
+				str += "<td>" + nullformat(datal[i].userName) + "</td>";
+				str += "<td>" + nullformat(datal[i].userPhone) + "</td>";
+				str += "<td>" + nullformat(datal[i].userEmail) + "</td>";
+				str += "<td>" + nullformat(datal[i].departName) + "</td>";
+				if(nullformat(datal[i].userStatus) == 0) {
+					str += "<td>" + '启用' + "</td>";
+				} else {
+					str += "<td>" + '禁用' + "</td>";
+				}
+				str += "<td>" + getLocalTime(nullformat(datal[i].userCreateTime)) + "</td>";
+				str += '</tr>';
+			}
+		} else {
+			alert('未能查询到可供展示的医生列表信息数据！');
+		}
+		$("#doctorInfoTboody").append(str);
+		return false;
+	}
+
+	//	添加
+	function addOrgUserSubmit() {
+		var param = $('#addOrgUserForm').serialize();
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(doctor_insertUser_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert("添加成功");
+			window.location.reload();
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//删除
+	//  删除信息
+	function del_doctorInfo(del_li) {
+		if(confirm("确认禁用该医生信息吗？")) {
+			var del_user_id = $(del_li).parent().attr("userId");
+			var param = {
+				"userId": del_user_id
+			};
+			var otype = "get";
+			var osync = false;
+			var reqResult = httpRequest(doctor_deleteUser_url, param, otype, osync);
+			if(reqResult.result == 0) {
+				alert("禁用成功！");
+				window.location.reload();
+			} else {
+				alert(reqResult.message);
+			}
+		}
+	}
+	//	查看
+	function check_doctorInfo(check) {
+		var editOrgUser_id = $(check).parent().attr("userId");
+		var param = {
+			"userId": editOrgUser_id
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(doctor_getUserByUserId_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			departPs('#checkOrgBranchDeptId');
+			$('#checkOrgBranchDeptId').val(reqResult.data.orgBranchDeptId);
+			$('#checkuserLoginName').val(reqResult.data.userLoginName);
+			$('#checkuserName').val(reqResult.data.userName);
+			$('#checkuserPhone').val(reqResult.data.userPhone);
+			$('#checkuserEmail').val(reqResult.data.userEmail);
+			$('#checkuserCreateTime').val(getLocalTime(reqResult.data.userCreateTime));
+			if(reqResult.data.userStatus == 0) {
+				$('#checkuserStatus input')[0].checked = "checked";
+			} else {
+				$('#checkuserStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//编辑
+	function edit_doctorInfo(edit_li) {
+		var editOrgUser_id = $(edit_li).parent().attr("userId");
+		var param = {
+			"userId": editOrgUser_id
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(doctor_getUserByUserId_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			$('#edituserId').val(reqResult.data.userId);
+			departPs('#editOrgBranchDeptId');
+			$('#editOrgBranchDeptId').val(reqResult.data.orgBranchDeptId);
+			$('#edituserId').val(reqResult.data.userId); //回显
+			$('#edituserLoginName').val(reqResult.data.userLoginName);
+			$('#edituserName').val(reqResult.data.userName);
+			$('#edituserPhone').val(reqResult.data.userPhone);
+			$('#edituserEmail').val(reqResult.data.userEmail);
+			if(reqResult.data.userStatus == 0) {
+				$('#edituserStatus input')[0].checked = "checked";
+			} else {
+				$('#edituserStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+		editvalidate();
+	}
+	//	编辑保存
+	function edit_saveDoctorInfo() {
+		var param = $('#editOrgUserForm').serialize();
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(doctor_updateUser_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('编辑成功!');
+			window.location.reload();
+		} else {
+			alert(reqResult.message);
+		}
+		return true;
+	}
+	//	表单校验
+	//	添加验证
+	$('#addDoctorInfo').on('click', function() {
+			$.formValidator.initConfig({
+				submitButtonID: "addOrgUserSubmit",
+				debug: true,
+				onSuccess: function() {
+					addOrgUserSubmit();
+				},
+				onError: function() {
+					alert("添加失败，具体错误，请看网页上的提示！")
+				},
+				submitAfterAjaxPrompt: '有数据正在异步验证，请稍等...'
+			});
+			//		登录名校验
+			$("#adduserLoginName").formValidator({
+				onShow: "请输入登录名",
+				onFocus: "登录名至少4个字符,最多16个字符!",
+				onCorrect: "该登录名可以注册!"
+			}).inputValidator({
+				min: 4,
+				max: 16,
+				onError: "你输入的登录名非法,请确认!"
+			}).regexValidator({
+				regExp: "username",
+				dataType: "enum",
+				onError: "登录名格式不正确!"
+			}).ajaxValidator({
+				dataType: "json",
+				async: false,
+				url: doctor_checkUserName_url,
+				success: function(reqResult) {
+					if(reqResult.data == 0) {
+						return true
+					};
+					if(reqResult.data == 1) {
+						return false
+					};
+					return false;
+				},
+				buttons: $("#addOrgUserSubmit"),
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert("服务器没有返回数据，可能服务器忙，请重试" + errorThrown);
+				},
+				onError: "该登录名不可用，请更换用户名",
+				onWait: "正在对登录名进行合法性校验，请稍候..."
+			});
+			//			用户名校验
+			$("#adduserName").formValidator({
+					onShow: "请输入用户名",
+					onFocus: "用户名至少2个字符,最多10个字符"
+				}).inputValidator({
+					min: 2,
+					max: 10,
+					onError: "你输入的用户名非法,请确认"
+				})
+				//手机号
+			$("#adduserPhone").formValidator({
+				onFocus: "请输入正确格式",
+				onCorrect: "输入格式正确",
+				onEmpty: "你真的不想留手机号码啊？"
+			}).inputValidator({
+				min: 11,
+				max: 11,
+				onError: "手机号码必须是11位的,请确认"
+			}).regexValidator({
+				regExp: "mobile",
+				dataType: "enum",
+				onError: "你输入的手机号码格式不正确"
+			});
+			//邮箱
+			$("#adduserEmail").formValidator({
+				onShow: "请输入你的email",
+				onfocus: "请注意你输入的email格式，例如:wzmaodong@126.com",
+				onCorrect: "输入完成"
+			}).regexValidator({
+				regExp: "email",
+				dataType: "enum",
+				onError: "email格式不正确"
+			});
+
+		})
+		//	编辑时验证
+	function editvalidate() {
+		$.formValidator.initConfig({
+			submitButtonID: "editDoctorInfoBtn",
+			debug: true,
+			onSuccess: function() {
+				edit_saveDoctorInfo();
+			},
+			onError: function() {
+				alert("添加失败，具体错误，请看网页上的提示！")
+			}
+		});
+		//用户名校验
+		$("#edituserName").on('change', function() {
+			$("#edituserName").formValidator({
+				onShow: "请输入用户名",
+				onFocus: "用户名至少2个字符,最多10个字符"
+			}).inputValidator({
+				min: 2,
+				max: 10,
+				onError: "你输入的用户名非法,请确认"
+			})
+		})
+
+		//手机号
+		$('#edituserPhone').on('change', function() {
+				$("#edituserPhone").formValidator({
+					onFocus: "请输入正确格式",
+					onCorrect: "输入格式正确",
+					onEmpty: "你真的不想留手机号码啊？"
+				}).inputValidator({
+					min: 11,
+					max: 11,
+					onError: "手机号码必须是11位的,请确认"
+				}).regexValidator({
+					regExp: "mobile",
+					dataType: "enum",
+					onError: "你输入的手机号码格式不正确"
+				});
+			})
+			//邮箱
+		$('#edituserEmail').on('change', function() {
+			$("#edituserEmail").formValidator({
+				onShow: "请输入邮箱",
+				onFocus: "邮箱至少6个字符,最多100个字符",
+				onCorrect: "输入格式正确",
+				defaultValue: "@"
+			}).inputValidator({
+				min: 6,
+				max: 100,
+				onError: "你输入的邮箱长度非法,请确认"
+			}).regexValidator({
+				regExp: "^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",
+				onError: "你输入的邮箱格式不正确"
+			});
+		})
+	}
+</script>

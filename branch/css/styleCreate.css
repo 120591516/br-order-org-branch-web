@@ -1,0 +1,138 @@
+/*外边距*/
+
+.margin_top_300px {
+	margin-top: 300px;
+}
+.margin_bm_10px{
+	margin-bottom: 10px;
+}
+.margin_top_10px{
+	margin-top:10px;
+}
+.margin_left_35px{
+	margin-left:35px;
+}
+.margin_left_54px{
+	margin-left:54px;
+}
+.margin_left_10px{
+	margin-left:10px!important;
+}
+/*内边距*/
+.padding_16{
+	padding: 0px 16px!important;
+}
+/*无边*/
+.border_0{
+	border:0!important;
+}
+/*定位*/
+
+.position_loginAb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -250px;
+	margin-top: -265px;
+}
+/*层级*/
+.modal{
+	z-index: 999!important;
+}
+/*居中定位*/
+
+.align_lf {
+	text-align: left;
+}
+/*浮动*/
+.float_r{
+	float: right;
+}
+
+/*字体*/
+
+.font_16 {
+	font-size: 16px!important;
+}
+.color_dark{
+	color: darkgrey;;
+}
+/*字符间距*/
+.lette_spacing_3{
+	letter-spacing: 0.3rem;
+}
+.lette_spacing_1{
+	letter-spacing: 1rem;
+}
+.lette_spacing_01{
+	letter-spacing: 0.1rem;
+}
+/*分页背景色*/
+#callBackPager ul li.active a{
+	background-color: #fff!important;
+	color:#000!important;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+}
+#callBackPager ul li:not([class="active"]) a{
+	background-color: transparent!important;
+	color:#fff!important;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/*验证码样式*/
+
+.inputCss {
+	border: 0;
+	background: rgba(0, 0, 0, 0.35);
+}
+
+
+/*input框的样式*/
+
+.input_boxShadow {
+	background-color: transparent;
+	border: 0;
+	box-shadow: -1px -1px 2px 0px #000;
+	color: #FFFFFF;
+}
+
+.span_addon {
+	background-color: transparent;
+	box-shadow: -1px -1px 10px 0px #000;
+	border: 0;
+	color: #fff;
+}
+
+
+/*input placeholder字体颜色S*/
+
+input::-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: #fff;
+	opacity: 1;
+}
+
+input::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: #fff;
+	opacity: 1;
+}
+
+input::-ms-input-placeholder {
+	color: #fff;
+	opacity: 1;
+}
+
+input::-webkit-input-placeholder {
+	color: #fff;
+	opacity: 1;
+}
+.input_login{
+	height: 55px;
+    overflow-y: hidden;
+}
+/*改变鼠标选中颜色*/
+　/* webkit, opera, IE9 */
+　　*::selection { background:#000; }
+　　/* mozilla firefox */
+　　*::-moz-selection { background:#000; }

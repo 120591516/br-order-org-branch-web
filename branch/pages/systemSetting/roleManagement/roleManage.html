@@ -1,0 +1,242 @@
+<!-- CSS -->
+<link href="/branch/css/bootstrap.min.css" rel="stylesheet">
+<link href="/branch/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/branch/css/animate.css" />
+<link href="/branch/css/style.css" rel="stylesheet">
+<link href="/branch/css/icons.css" rel="stylesheet">
+<!--form样式-->
+<link rel="stylesheet" type="text/css" href="/branch/css/form.css" />
+<!--自定义css-->
+<link rel="stylesheet" type="text/css" href="/branch/css/styleCreate.css" />
+<link rel="stylesheet" type="text/css" href="/branch/css/customStyles.css" />
+<!-- Main content -->
+<section class="content">
+	<div class="block-area">
+		<h3 class="block-title">用户角色管理列表</h3>
+		<a href="#addRoleModel" data-toggle='modal' class="block-title btn float_r" id="addUsrInfo">添加</a>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-bordered table-striped" id="actorTable">
+				<thead>
+					<tr>
+						<th>编辑</th>
+						<th>用户名</th>
+						<th>角色描述</th>
+						<th>状态</th>
+						<th>权限</th>
+					</tr>
+				</thead>
+				<tbody id="actorTbody">
+				</tbody>
+			</table>
+			<div class="row">
+				<div class="col-xs-12 col-md-8" id="callBackPager"></div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!--模态框修改-->
+<div class="modal fade" id="addRoleModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">员工信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="addRoleForm">
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">角色名称</span>
+						<input type="text" id="addRoleName" class="form-control" name="roleName" aria-describedby="basic-addon1">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">角色描述</span>
+						<input type="text" id="addRoleDescribe" class="form-control" name="roleDescribe" aria-describedby="basic-addon1">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id="addRoleSubmit">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框编辑-->
+<div class="modal fade" id="editRoleModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel_edit">员工信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="editRoleForm">
+					<div class="input-group margin_bm_10px">
+						<input id="roleId" name="branchRoleId" type="text" hidden="hidden" />
+						<span class="input-group-addon span_addon lette_spacing_3">用户名</span>
+						<input type="text" id="editRoleName" name="roleName" class="form-control" aria-describedby="basic-addon1" value="">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_3">用户名</span>
+						<input type="text" id="editRoleDescribe" name="roleDescribe" class="form-control" aria-describedby="basic-addon1" value="">
+					</div>
+					<div class="input-group margin_bm_10px" id="editRoleStatus">
+						<span class="span_addon lette_spacing_3 input-group-addon userlist_status_right_border">状 态</span>
+						<input type="radio" name='roleStatus' value="0" class="userlist_statusinput_vertical" />启用
+						<input type="radio" name='roleStatus' value="1" class="userlist_statusinput_vertical" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id='editRoleSave'>保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/branch/js/jquery.min.js"></script>
+<script src="/branch/js/bootstrap.min.js"></script>
+<script src="/branch/js/createJs/content.js"></script>
+<!--地址-->
+<script src="/branch/js/createJs/pageUrl.js"></script>
+<!--分页插件-->
+<script src="/branch/js/plugins/extendPagination.js"></script>
+<!--select样式-->
+<script src="/branch/js/plugins/select.min.js"></script>
+<script type="text/javascript">
+	init_page();
+
+	function init_page() {
+		$('#actorTable').children('tbody').empty();
+		page_curr = 1;
+		init_list();
+		init_pager();
+	}
+
+	function init_list() {
+		//初始化表格
+		$('#actorTable').children('tbody').empty();
+		var otype = "post";
+		var param = {
+			"page": 1,
+			"rows": 10
+		};
+		var osync = false;
+		var reqResult = httpRequest(getRoleListUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			callBackPagination(reqResult);
+		}
+		return false;
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				init_list();
+			}
+		});
+	}
+	//列表展示
+	function createTable(currPage, limit, total, dataBack) {
+		$("#actorTbody").empty();
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			var rolePowerPageUrl = '"/branch/pages/systemSetting/power/rolePower.html?roleId=' + datal[i].branchRoleId + '"';
+			var statuWord = datal[i].roleStatus === 0 ? "启用" : "禁用";
+			str += "<tr><td roleId='" + datal[i].branchRoleId + "'>";
+			str += "<a href='#editRoleModel' title='编辑用户' data-toggle='modal' onclick='editRole(this)'><i class='fa fa-pencil'></i></a> ";
+			str += "<a href='#' title='删除用户' onclick='delRole(this)'><i class='fa fa-trash-o'></i></a>";
+			str += "</td>";
+			str += "<td>" + datal[i].roleName + "</td>";
+			str += "<td>" + datal[i].roleDescribe + "</td>";
+			str += "<td>" + statuWord + "</td>";
+			str += "<td><a class='btn btn-default' onclick='ChangePageUrl(" + rolePowerPageUrl + ")'>权限</a></td>";
+			str += '</tr>';
+		}
+		$("#actorTbody").append(str);
+		return false;
+	}
+	//添加角色
+	$('#addRoleSubmit').on('click', function() {
+			var otype = "post"
+			var osync = false;
+			var userName = $('#addRoleName').val();
+			var roleDescribe = $('#addRoleDescribe').val();
+			if(userName == '' || roleDescribe == '') {
+				alert('请输入完整信息！');
+			} else {
+				var param = $('#addRoleForm').serialize();
+				var reqResult = httpRequest(addRoleUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					alert('添加成功');
+					window.location.reload();
+				} else {
+					alert(reqResult.message);
+				}
+			}
+		})
+		//删除角色
+	function delRole(del) {
+		if(confirm("确认删除该角色吗？")) {
+			var delRoleId = $(del).parent().attr("roleId");
+			var otype = "get"
+			var osync = false;
+			var param = {
+				"roleId": delRoleId
+			};
+			var reqResult = httpRequest(deleteRoleUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				window.location.reload();
+			} else {
+				alert(reqResult.message);
+			}
+
+		}
+	}
+	//编辑回显角色列表内容
+	function editRole(edit) {
+		var editRoleId = $(edit).parent().attr("roleId");
+		var otype = "get"
+		var osync = false;
+		var param = {
+			"roleId": editRoleId,
+		};
+		var reqResult = httpRequest(getRoleByIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$('#roleId').val(reqResult.data.branchRoleId);
+			$('#editRoleName').val(reqResult.data.roleName);
+			$('#editRoleDescribe').val(reqResult.data.roleDescribe);
+			if(reqResult.data.roleStatus == 0) {
+				$('#editRoleStatus input')[0].checked = "checked";
+			} else {
+				$('#editRoleStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//保存编辑内容
+	$('#editRoleSave').on('click', function() {
+		var otype = "post"
+		var osync = false;
+		var param = $('#editRoleForm').serialize();
+		var reqResult = httpRequest(updateRoleUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('编辑成功');
+			window.location.reload();
+		} else {
+			alert(reqResult.message);
+		}
+	})
+</script>

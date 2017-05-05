@@ -1,0 +1,530 @@
+<!-- CSS -->
+<link href="/branch/css/bootstrap.min.css" rel="stylesheet">
+<link href="/branch/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/branch/css/animate.css" />
+<link href="/branch/css/style.css" rel="stylesheet">
+<link href="/branch/css/icons.css" rel="stylesheet">
+<!--form样式-->
+<link rel="stylesheet" type="text/css" href="/branch/css/form.css" />
+<!--自定义css-->
+<link rel="stylesheet" type="text/css" href="/branch/css/styleCreate.css" />
+<link rel="stylesheet" type="text/css" href="/branch/css/customStyles.css" />
+<!--表单验证-->
+<link rel="stylesheet" type="text/css" href="/branch/css/validator.css" />
+<!-- Main content -->
+<section class="content">
+	<div class="block-area">
+		<h3 class="block-title">用户列表</h3>
+		<a href="#addUserModal" data-toggle='modal' class="block-title btn float_r" id="addUsrInfo">添加</a>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped" id="userTable">
+				<thead>
+					<tr>
+						<th>编辑</th>
+						<th>用户名</th>
+						<th>姓名</th>
+						<th>手机号码</th>
+						<th>邮箱</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody id="userTbody"></tbody>
+			</table>
+			<div class="row">
+				<div class="col-xs-12 col-md-8" id="callBackPager"></div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--模态框查看-->
+<div class="modal fade" id="checkUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel_see">员工信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="checkUserForm">
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon lette_spacing_01">登 录 名</span>
+						<input type="text" name="userLoginName" id="checkUserLoginName" class="form-control userAdmin_height_40" aria-describedby="basic-addon1" disabled="true">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon ">用户姓名</span>
+						<input type="text" name="userName" id="checkUsername" class="form-control userAdmin_height_40" aria-describedby="basic-addon1" disabled="true">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="input-group-addon span_addon ">手机号码</span>
+						<input type="text" name="userPhone" id="checkUserPhone" class="form-control userAdmin_height_40" aria-describedby="basic-addon1" disabled="true">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">用户邮箱</span>
+						<input type="text" name="userEmail" id="checkUserEmail" class="form-control userAdmin_height_40" aria-describedby="basic-addon1" disabled="true">
+					</div>
+					<div class="input-group margin_bm_10px" id="checkUserStatus">
+						<span class="span_addon  input-group-addon userlist_status_right_border">状 态</span>
+						<input type="radio" name='userStatus' value="0" disabled="true" class="userlist_statusinput_vertical" />启用
+						<input type="radio" name='userStatus' value="1" disabled="true" class="userlist_statusinput_vertical" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框添加-->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">员工信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" method="post" novalidate="novalidate" id='userForm'>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon lette_spacing_01">登 录 名</span>
+						<input type="text" id="addUserLoginName" class="form-control" name="userLoginName" aria-describedby="basic-addon1" maxlength='12' required>
+					</div>
+					<div id="addUserLoginNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">用户姓名</span>
+						<input type="text" id="addUserName" class="form-control check_userloginname_validate" name="userName" aria-describedby="basic-addon1" maxlength='12' required>
+					</div>
+					<div id="addUserNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">手机号码</span>
+						<input type="text" id="addUserPhone" class="form-control" name="userPhone" aria-describedby="basic-addon1" required>
+					</div>
+					<div id="addUserPhoneTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">用户邮箱</span>
+						<input type="email" id="addUserEmail" class="form-control" name="userEmail" aria-describedby="basic-addon1" required>
+					</div>
+					<div id="addUserEmailTip"></div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn btn-default float_r" data-dismiss="modal" id="addUserSubmit">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框修改-->
+<div class="modal fade" id="editUserModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel_edit">员工信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="editUserForm">
+					<input type="hidden" name="userId" id="userLoginName_id" value="" />
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon lette_spacing_01">登 录 名</span>
+						<input type="text" id="editUserLoginName" name="userLoginName" class="form-control" maxlength='12' aria-describedby="basic-addon1" value="" disabled="disabled">
+					</div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">用户姓名</span>
+						<input type="text" id="editUserName" name="userName" class="form-control" maxlength='12' aria-describedby="basic-addon1" value="">
+					</div>
+					<div id="editUserNameTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">手机号码</span>
+						<input type="text" id="editUserPhone" name="userPhone" class="form-control" aria-describedby="basic-addon1" value="">
+					</div>
+					<div id="editUserPhoneTip"></div>
+					<div class="input-group margin_bm_10px">
+						<span class="span_addon  input-group-addon">用户邮箱</span>
+						<input type="text" id="editUserEmail" name="userEmail" class="form-control" aria-describedby="basic-addon1" value="">
+					</div>
+					<div id="editUserEmailTip"></div>
+					<div class="input-group margin_bm_10px" id="editUserState">
+						<span class="span_addon  input-group-addon userlist_status_right_border">状 态</span>
+						<input type="radio" name='userStatus' value="0" class="userlist_statusinput_vertical" />启用
+						<input type="radio" name='userStatus' value="1" class="userlist_statusinput_vertical" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-default float_r" data-dismiss="modal" id='editUserFormSave'>保存</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
+</div>
+<script src="/branch/js/jquery.min.js"></script>
+<script src="/branch/js/bootstrap.min.js"></script>
+<script src="/branch/js/createJs/content.js"></script>
+<!--地址-->
+<script src="/branch/js/createJs/pageUrl.js"></script>
+<!--分页插件-->
+<script src="/branch/js/plugins/extendPagination.js"></script>
+<!--select样式-->
+<script src="/branch/js/plugins/select.min.js"></script>
+<!--表单验证-->
+<script src="/branch/js/plugins/formValidator-4.0.1.min.js"></script>
+<script src="/branch/js/plugins/formValidatorRegex.js"></script>
+<script type="text/javascript">
+	init_page();
+
+	function init_page() {
+		$('#userTbody').empty();
+		page_curr = 1;
+		init_list();
+		init_pager();
+	}
+
+	function init_list() {
+		$('#userTbody').empty();
+		var otype = "post";
+		var osync = false;
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		var reqResult = httpRequest(getUserListUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+		}
+		return false;
+	}
+	//初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				init_list();
+			}
+		});
+	}
+	//列表展示
+	function createTable(currPage, limit, total, dataBack) {
+		$("#userTbody").empty();
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			var userRolePageUrl ="/branch/pages/systemSetting/userManagement/userRole.html?form_user_id="+datal[i].userId;
+			var userRolePageUrl='"'+userRolePageUrl+'"';
+			str += "<tr><td userId='" + datal[i].userId + "'>";
+			str += "<a href='#checkUserModal' title='查看用户' data-toggle='modal' onclick='checkUser(this)'><i class='fa fa-eye'></i></a> ";
+			//str += "<a title='查看用户' data-toggle='modal' onclick='checkUser(this)'><i class='fa fa-eye'></i></a> ";
+			str += "<a href='#editUserModel' title='编辑用户' data-toggle='modal' onclick='editUser(this)'><i class='fa fa-pencil'></i></a> ";
+			str += "<a href='javascript: void(0);' title='删除用户' onclick='delUser(this)'><i class='fa fa-trash-o'></i></a>";
+			str += "<a href='javascript: void(0);' onclick='ChangePageUrl("+ userRolePageUrl +")' title='分配角色' class='padding-left'><i class='fa fa-user'></i></a>";
+			str += "<a href='javascript: void(0);' title='重置密码' class='padding-left' onclick='reset_word(this)'><i class='fa fa-unlock'></i></a>";
+			str += "</td>";
+			str += "<td>" + datal[i].userLoginName + "</td>";
+			str += "<td>" + datal[i].userName + "</td>";
+			str += "<td>" + datal[i].userPhone + "</td>";
+			str += "<td>" + datal[i].userEmail + "</td>";
+			if(datal[i].userStatus == 0) {
+				str += "<td>" + '启用 ' + "</td>";
+			} else {
+				str += "<td>" + '禁用' + "</td>";
+			}
+			str += '</tr>';
+		}
+		$("#userTbody").append(str);
+		return false;
+	}
+
+	//模态框开始
+	//打开模态框
+	//	var checkUserId;
+	//	function checkUser(check) {
+	//		var fatherBody = $(window.top.document.body);
+	//		var id = 'checkUserModal';
+	//		var dialog = $('#' + id);
+	//		if(dialog.length == 0) {
+	//			dialog = $('<div class="modal fade" role="dialog" id="' + id + '"/>');
+	//			dialog.appendTo(fatherBody);
+	//		}
+	//		dialog.load("checkUser.html", function() {
+	//			dialog.modal({
+	//				backdrop: true
+	//			});
+	//		});
+	//		fatherBody.append("<div id='backdropId' class='modal-backdrop fade in'></div>");
+	//		
+	//		cUserId = $(check).parent().attr("userId");
+	//		checkUserId = cUserId;
+	//		checkreqResult();		
+	//	}
+	//	function checkreqResult(){
+	//		var param = {
+	//					"userId": checkUserId
+	//				};
+	//				var otype = "get";
+	//				var osync = false;
+	//				var reqResult = httpRequest(checkUserDetialByUserIdUrl, param, otype, osync);
+	//				if(reqResult.result == 0) {
+	//					$('#checkUserLoginName').val(reqResult.data.userLoginName);
+	//					$('#checkUsername').val(reqResult.data.userName);
+	//					$('#checkUserPhone').val(reqResult.data.userPhone);
+	//					$('#checkUserEmail').val(reqResult.data.userEmail);
+	//					if(reqResult.data.userStatus == 0) {
+	//						$('#checkUserStatus input')[0].checked = "true";
+	//					} else {
+	//						$('#checkUserStatus input')[1].checked = "checked";
+	//					}
+	//				} else {
+	//					alert(reqResult.message);
+	//				}
+	//	}
+	//模态框结束
+
+	//查看用户详情
+	function checkUser(check) {
+		var checkUserId = $(check).parent().attr("userId");
+		var param = {
+			"userId": checkUserId
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(checkUserDetialByUserIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$('#checkUserForm').modal("toggle");
+			$(".modal-backdrop").remove();
+			$('#checkUserLoginName').val(reqResult.data.userLoginName);
+			$('#checkUsername').val(reqResult.data.userName);
+			$('#checkUserPhone').val(reqResult.data.userPhone);
+			$('#checkUserEmail').val(reqResult.data.userEmail);
+			if(reqResult.data.userStatus == 0) {
+				$('#checkUserStatus input')[0].checked = "checked";
+			} else {
+				$('#checkUserStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//删除用户
+	function delUser(del) {
+		if(confirm("确认删除该用户吗？")) {
+			var delUserId = $(del).parent().attr("userId");
+			var param = {
+				"userId": delUserId
+			};
+			var otype = "post";
+			var osync = false;
+			var reqResult = httpRequest(deleteUserMsgByUserIdUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				alert("删除成功");
+				window.location.reload();
+			} else {
+				alert(reqResult.message);
+			}
+		}
+	}
+	//添加用戶信息
+	function addUserInfo() {
+		var param = $('#userForm').serialize();
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(insertUserMsgByUserIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert("添加成功");
+			window.location.reload();
+		} else {
+			alert(reqResult.message);
+		}
+	}
+
+	//編輯修改保存信息
+	function editUser(edit) {
+		var editUserId = $(edit).parent().attr("userId");
+		var param = {
+			"userId": editUserId
+		};
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(checkUserDetialByUserIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$("#userLoginName_id").val(reqResult.data.userId);
+			var editUserLoginName = $('#editUserLoginName');
+			var editUserName = $('#editUserName');
+			var editUserPhone = $('#editUserPhone');
+			var editUserEmail = $('#editUserEmail');
+			var editUserState = $('#editUserState input');
+			editUserLoginName.val(reqResult.data.userLoginName);
+			editUserName.val(reqResult.data.userName);
+			editUserPhone.val(reqResult.data.userPhone);
+			editUserEmail.val(reqResult.data.userEmail);
+			if(reqResult.data.userStatus == 0) {
+				editUserState[0].checked = "checked";
+			} else {
+				editUserState[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+		editValidate();
+	}
+
+	function editUserFormInfo() {
+		var param = $('#editUserForm').serialize();
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(updateUserMsgByUserIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('编辑成功');
+			window.location.reload();
+		} else {
+			alert(reqResult.message);
+		}
+	}
+
+	//	表单校验
+	//	添加校验
+	$('#addUsrInfo').on('click', function() {
+			$.formValidator.initConfig({
+				submitButtonID: "addUserSubmit",
+				debug: true,
+				onSuccess: function() {
+					addUserInfo();
+				},
+				onError: function() {
+					alert("添加失败，具体错误，请看网页上的提示！")
+				},
+				submitAfterAjaxPrompt: '有数据正在异步验证，请稍等...'
+			});
+			//		登录名校验
+			$("#addUserLoginName").formValidator({
+				onShow: "请输入登录名",
+				onFocus: "登录名至少4个字符,最多16个字符!",
+				onCorrect: "该登录名可以注册!"
+			}).inputValidator({
+				min: 4,
+				max: 16,
+				onError: "你输入的登录名非法,请确认!"
+			}).regexValidator({
+				regExp: "username",
+				dataType: "enum",
+				onError: "登录名格式不正确!"
+			}).ajaxValidator({
+				dataType: "json",
+				async: false,
+				url: checkUserNameUrl,
+				success: function(reqResult) {
+					if(reqResult.data == 0) {
+						return true
+					};
+					if(reqResult.data == 1) {
+						return false
+					};
+					return false;
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert("服务器没有返回数据，可能服务器忙，请重试" + errorThrown);
+				},
+				onError: "该登录名不可用，请更换用户名",
+				onWait: "正在对登录名进行合法性校验，请稍候..."
+			});
+			//用户姓名
+			$("#addUserName").formValidator({
+					onShow: "请输入用户名",
+					onFocus: "用户名至少2个字符,最多10个字符"
+				}).inputValidator({
+					min: 2,
+					max: 10,
+					onError: "你输入的用户名非法,请确认"
+				})
+				//手机号码
+			$("#addUserPhone").formValidator({
+				onFocus: "请输入正确格式",
+				onCorrect: "输入格式正确",
+				onEmpty: "你真的不想留手机号码啊？"
+			}).inputValidator({
+				min: 11,
+				max: 11,
+				onError: "手机号码必须是11位的,请确认"
+			}).regexValidator({
+				regExp: "mobile",
+				dataType: "enum",
+				onError: "你输入的手机号码格式不正确"
+			});
+			//用户邮箱
+			$("#addUserEmail").formValidator({
+				onShow: "请输入你的email",
+				onfocus: "请注意你输入的email格式，例如:wzmaodong@126.com",
+				onCorrect: "输入完成"
+			}).regexValidator({
+				regExp: "email",
+				dataType: "enum",
+				onError: "email格式不正确"
+			});
+		})
+		//	编辑时验证
+	function editValidate() {
+		$.formValidator.initConfig({
+			submitButtonID: "editUserFormSave",
+			debug: true,
+			onSuccess: function() {
+				editUserFormInfo();
+			},
+			onError: function() {
+				alert("添加失败，具体错误，请看网页上的提示！")
+			},
+			submitAfterAjaxPrompt: '有数据正在异步验证，请稍等...'
+		});
+		//用户姓名
+		$("#editUserName").on('change', function() {
+			$("#editUserName").formValidator({
+				onShow: "请输入用户名",
+				onFocus: "用户名至少2个字符,最多10个字符"
+			}).inputValidator({
+				min: 2,
+				max: 10,
+				onError: "你输入的用户名非法,请确认"
+			})
+		})
+
+		//手机号码
+		$("#editUserPhone").on('change', function() {
+			$("#editUserPhone").formValidator({
+				onFocus: "请输入正确格式",
+				onCorrect: "输入格式正确",
+				onEmpty: "你真的不想留手机号码啊？"
+			}).inputValidator({
+				min: 11,
+				max: 11,
+				onError: "手机号码必须是11位的,请确认"
+			}).regexValidator({
+				regExp: "mobile",
+				dataType: "enum",
+				onError: "你输入的手机号码格式不正确"
+			});
+		})
+
+		//用户邮箱
+		$("#editUserEmail").on('change', function() {
+			$("#editUserEmail").formValidator({
+				onShow: "请输入你的email",
+				onfocus: "请注意你输入的email格式，例如:wzmaodong@126.com",
+				onCorrect: "输入完成"
+			}).regexValidator({
+				regExp: "email",
+				dataType: "enum",
+				onError: "email格式不正确"
+			});
+		})
+
+	}
+</script>

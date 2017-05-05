@@ -1,0 +1,70 @@
+<!-- CSS -->
+<link href="/branch/css/bootstrap.min.css" rel="stylesheet">
+<link href="/branch/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/branch/css/animate.css" />
+<link href="/branch/css/style.css" rel="stylesheet">
+<link href="/branch/css/icons.css" rel="stylesheet">
+<!--自定义css-->
+<link rel="stylesheet" type="text/css" href="/branch/css/styleCreate.css" />
+<!--form样式-->
+<link rel="stylesheet" type="text/css" href="/branch/css/form.css" />
+<section class="container">
+	<div class="block-area">
+		<h3 class="block-title">支付记录列表</h3>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>编辑</th>
+						<th>订单号</th>
+						<th>订单金额</th>
+						<th>缴费方式</th>
+						<th>创建时间</th>
+					</tr>
+				</thead>
+				<tbody id="recordsOfConsumptionListInfoTbody"></tbody>
+			</table>
+		</div>
+	</div>
+</section>
+<!-- jQuery -->
+<script src="/branch/js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/branch/js/bootstrap.min.js"></script>
+<!--本地自建JS-->
+<script src="/branch/js/createJs/content.js"></script>
+<!--地址-->
+<script src="/branch/js/createJs/pageUrl.js"></script>
+<!--select样式-->
+<script src="/branch/js/plugins/select.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+			recordsOfConsumptionInfo();
+		})
+		//支付记录信息列表
+	function recordsOfConsumptionInfo() {
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(payFor_getPayInfoByPage_url, null, otype, osync);
+		
+		if(reqResult.result == 0) {
+			var datal = reqResult.Data.payInfo;
+			var str = '';
+			var pageInfo='"/branch/pages/order/orderList.html"';
+			for(var i = 0; i < datal.length; i++) {
+				str += "<tr><td customerOrderPayInfoId='" + nullformat(datal[i].customerOrderPayInfoId) + "'>";
+				str += "<a href='' title='跳转到订单详情页' onclick='ChangePageUrl("+pageInfo+")'><i class='fa fa-plus-square-o'></i></a> ";
+				str += "</td>";
+				str += "<td>" + nullformat(datal[i].orderNo) + "</td>";
+				str += "<td>" + nullformat(datal[i].orderPayAmount) + "</td>";
+				str += "<td>" + nullformat(datal[i].payWayName) + "</td>";
+				str += "<td>" + getLocalTime(nullformat(datal[i].customerOrderPayInfoCreateTime)) + "</td>";
+				str += '</tr>';
+			}
+			$('#recordsOfConsumptionListInfoTbody').empty().append(str);
+			return false;
+		}
+	}
+</script>
